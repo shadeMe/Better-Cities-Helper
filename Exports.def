@@ -1,0 +1,4 @@
+LIBRARY	"Better Cities Helper"
+EXPORTS
+OBSEPlugin_Query
+OBSEPlugin_Load
