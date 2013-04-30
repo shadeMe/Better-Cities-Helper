@@ -1,10 +1,13 @@
 #include "BCHInternals.h"
 
-IDebugLog					gLog("Better Cities Helper.log");
+IDebugLog					gLog("Open-Better Cities Helper.log");
 
 PluginHandle				g_pluginHandle = kPluginHandle_Invalid;
 OBSEMessagingInterface*		g_msgIntfc = NULL;
-INI::INIManager*			g_INIManager = new BCHINIManager();
+HINSTANCE					g_ModuleInstance = NULL;
+bool						g_OpenCitiesMode = false;
+
+BCHINIManager				BCHINIManager::Instance;
 
 _DefineHookHdlr(PersistentDoorFixerUpper, 0x004D8AB3);
 
@@ -16,6 +19,7 @@ void BCHINIManager::Initialize( const char* INIPath, void* Parameter )
 	if (PopulateFromINI() == false)
 		_MESSAGE("Couldn't populate INI manager from INI!");
 }
+
 
 void HelpVorians( void )
 {
@@ -74,14 +78,17 @@ void OBSEMessageHandler(OBSEMessagingInterface::Message* msg)
 			_MESSAGE("PostLoadGame message received!");
 			gLog.Indent();
 
-			for (SME::INI::INIManagerIterator Itr(g_INIManager); Itr.GetDone() == 0; Itr.GetNextSetting())
+			for (SME::INI::INIManagerIterator Itr(&BCHINIManager::Instance); Itr.GetDone() == 0; Itr.GetNextSetting())
 			{
 				const SME::INI::INISetting* Setting = Itr.GetCurrentSetting();
 				const ModEntry* Plugin = (*g_dataHandler)->LookupModByName(Setting->GetSection());
 
 				if (Plugin && Plugin->IsLoaded())
 				{
-					UInt32 FormID = Setting->GetValueAsUnsignedInteger(true);
+					UInt32 FormID = 0;
+					SME_ASSERT(Setting->GetType() == SME::INI::INISetting::kType_String);
+					sscanf_s(Setting->GetData().s, "%08X", &FormID);
+
 					_MESSAGE("Resetting reference %08X for plugin %s", FormID, Setting->GetSection());
 
 					ResetDoorRef(FormID);

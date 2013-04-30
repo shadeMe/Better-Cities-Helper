@@ -5,8 +5,24 @@ extern "C"
 {
 	bool OBSEPlugin_Query(const OBSEInterface * obse, PluginInfo * info)
 	{
-		_MESSAGE("Better Cities Helper Initializing...");
+		SME_ASSERT(g_ModuleInstance != NULL);
 
+		char Buffer[MAX_PATH] = {0};
+		GetModuleFileName((HMODULE)g_ModuleInstance, Buffer, sizeof(Buffer));
+		std::string FileName(Buffer);
+		
+		SME::StringHelpers::MakeLower(FileName);
+		FileName = FileName.substr(FileName.rfind("\\") + 1);
+		FileName.erase(FileName.rfind("."), 4);
+
+		if (FileName.find("open") == 0)
+			g_OpenCitiesMode = true;
+
+		if (g_OpenCitiesMode == false)
+			_MESSAGE("Better Cities Helper Initializing...");
+		else
+			_MESSAGE("Open Cities Helper Initializing...");
+		
 		info->infoVersion =	PluginInfo::kInfoVersion;
 		info->name =		"Better Cities Helper";
 		info->version =		PACKED_SME_VERSION;
@@ -42,7 +58,10 @@ extern "C"
 		g_msgIntfc->RegisterListener(g_pluginHandle, "OBSE", OBSEMessageHandler);
 
 		_MESSAGE("Initializing INI Manager");
-		g_INIManager->Initialize("Data\\OBSE\\Plugins\\Better Cities Helper.ini", NULL);
+		if (g_OpenCitiesMode == false)
+			BCHINIManager::Instance.Initialize("Data\\OBSE\\Plugins\\Better Cities Helper.ini", NULL);
+		else
+			BCHINIManager::Instance.Initialize("Data\\OBSE\\Plugins\\open_cities.ini", NULL);
 
 		_MESSAGE("Meh, Vorians. Meh...\n\n");
 		gLog.Indent();
@@ -51,4 +70,17 @@ extern "C"
 
 		return true;
 	}
+
+	BOOL WINAPI DllMain(HANDLE hDllHandle, DWORD dwReason, LPVOID lpreserved)
+	{
+		switch (dwReason)
+		{
+		case DLL_PROCESS_ATTACH:
+			g_ModuleInstance = (HINSTANCE)hDllHandle;
+			break;
+		}
+
+		return TRUE;
+	}
 };
+

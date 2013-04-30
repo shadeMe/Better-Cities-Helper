@@ -61,10 +61,10 @@
     <ClCompile Include="..\[Libraries]\SME Sundries\MemoryHandler.cpp">
       <Filter>Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="Dllmain.c">
-      <Filter>OBSE</Filter>
-    </ClCompile>
     <ClCompile Include="BCHInternals.cpp" />
+    <ClCompile Include="..\[Libraries]\SME Sundries\StringHelpers.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\obse\obse\GameActorValues.h">
@@ -128,6 +128,9 @@
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="BCHInternals.h" />
+    <ClInclude Include="..\[Libraries]\SME Sundries\StringHelpers.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\obse\obse\GameRTTI_1_1.inl">

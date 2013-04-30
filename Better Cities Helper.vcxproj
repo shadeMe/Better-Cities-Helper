@@ -142,13 +142,8 @@
     <ClCompile Include="..\obse\obse\Utilities.cpp" />
     <ClCompile Include="..\[Libraries]\SME Sundries\INIManager.cpp" />
     <ClCompile Include="..\[Libraries]\SME Sundries\MemoryHandler.cpp" />
+    <ClCompile Include="..\[Libraries]\SME Sundries\StringHelpers.cpp" />
     <ClCompile Include="BCHInternals.cpp" />
-    <ClCompile Include="Dllmain.c">
-      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ForcedIncludeFiles>
-      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </ForcedIncludeFiles>
-    </ClCompile>
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +166,7 @@
     <ClInclude Include="..\[Libraries]\SME Sundries\INIManager.h" />
     <ClInclude Include="..\[Libraries]\SME Sundries\MemoryHandler.h" />
     <ClInclude Include="..\[Libraries]\SME Sundries\SME_Prefix.h" />
+    <ClInclude Include="..\[Libraries]\SME Sundries\StringHelpers.h" />
     <ClInclude Include="BCHInternals.h" />
     <ClInclude Include="VersionInfo.h" />
   </ItemGroup>
